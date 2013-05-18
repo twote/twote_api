@@ -1,0 +1,13 @@
+{
+  "hashId": "twote",
+  "db": {
+    "uri": "http://localhost:5984",
+    "name": "twote"
+  },
+  "twitter": {
+    "consumerKey": "xxxx",
+    "consumerSecret": "xxxx",
+    "accessToken": "xxxx",
+    "tokenSecret": "xxxx"
+  }
+}

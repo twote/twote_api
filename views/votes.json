@@ -1,0 +1,11 @@
+{
+   "_id": "_design/votes",
+   "_rev": "4-7c4657eed3a7878a1a5f87cdf86ec709",
+   "language": "javascript",
+   "views": {
+       "sumVotesByPoll": {
+           "map": "var hashId = 'twote', userId, hashTag, hashTags, votesGiven = {};\n\nfunction(doc) {\n  userId = doc.user.id;\n  hashTags = [];\n\n  // Iterate trough hashtags\n  for (var i in doc.entities.hashtags) {\n    hashTag = doc.entities.hashtags[i].text.toLowerCase();\n    // Filter out our own hashId\n    if (hashTag === hashId) continue;\n    // Filter double hashtags\n    if(hashTags.indexOf(hashTag) > -1) continue;\n    // Emit hashtag\n    hashTags.push(hashTag);\n  }\n\n  // Skip double votes from users\n  if(votesGiven[hashTags[0]] && votesGiven[hashTags[0]].indexOf(userId) > -1) return;\n\n  var j = hashTags.length - (hashTags.length - 1);\n  for (j; j < hashTags.length; j++) {\n    emit([hashTags[0], hashTags[j]], 1);\n  }\n  // Emit user if at least one choice was given (valid vote)\n  if(hashTags.length > 1) {\n    if(votesGiven[hashTags[0]]) {\n      votesGiven[hashTags[0]].push(userId);\n    } else {\n      votesGiven[hashTags[0]] = [userId];\n    }\n  }\n}",
+           "reduce": "_sum"
+       }
+   }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "twote",
+  "version": "0.0.1",
+  "description": "Public voting system for Twitter.",
+  "main": "index.js",
+  "dependencies": {
+    "cradle": "~0.6.5",
+    "twit": "~1.1.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sreuter/twote"
+  },
+  "keywords": [
+    "voting",
+    "polling",
+    "twitter"
+  ],
+  "author": {
+    "name": "Sascha Reuter",
+    "email": "s.reuter@geek-it.de"
+  },
+  "license": "WTFPL"
+}
