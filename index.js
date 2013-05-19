@@ -1,6 +1,12 @@
 var Twit = require('twit'),
     config = require('./config');
 
+// Make process "fault tolerant" ;-)
+
+process.on('uncaughtException', function(err) {
+  console.log(err);
+});
+
 // Setup CouchDB connection
 
 var db = new(require('cradle').Connection)(config.db.uri).database(config.db.name);
