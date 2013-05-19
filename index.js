@@ -27,31 +27,44 @@ stream.on('tweet', function(tweet) {
   db.save(tweet.id_str, tweet);
 });
 
+// Helper functions
+
+function nice_votes(db_result) {
+  var votes = {}, voteHash;
+  for(var i in db_result) {
+    hash = db_result[i].key;
+     // Create vote if not existing yet
+    if(! votes[hash]) {
+      votes[hash] = {};
+    }
+    for (var option in db_result[i].value.votes) {
+      counter = Object.keys(db_result[i].value.votes[option]).length;
+      // Set choice counter
+      votes[hash][option] = counter;
+    }
+  }
+  return votes;
+}
+
 // Setup express
 
 var express = require('express');
 var app = express();
 
-app.get('/', function(req, res){
-  db.view('votes/sumVotesByPoll', {group: true, reduce: true}, function(err, db_result) {
+app.get('/:poll?', function(req, res){
+  var query = {
+    group: true,
+    reduce: true
+  }
+  if(req.param('poll')) query.key = req.param('poll');
+  db.view('votes/sumVotesByPoll', query, function(err, db_result) {
     if(err) {
       console.log(err)
       return res.send(500);
     }
-    var votes = {}, voteHash;
-    for(var i in db_result) {
-      hash = db_result[i].key;
-       // Create vote if not existing yet
-      if(! votes[hash]) {
-        votes[hash] = {};
-      }
-      for (var option in db_result[i].value.votes) {
-        counter = Object.keys(db_result[i].value.votes[option]).length;
-        // Set choice counter
-        votes[hash][option] = counter;
-      }
-    }
-    res.send(votes);
+    res.send({
+      twotes: nice_votes(db_result)
+    });
   });
 });
 
