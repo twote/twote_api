@@ -131,8 +131,6 @@ var app = express();
 app.use(cors());
 
 app.get('/twote', function (req, res) {
-  var result;
-
   var query = {
     group: true,
     reduce: true
@@ -150,8 +148,6 @@ app.get('/twote', function (req, res) {
 });
 
 app.get('/twote/:id', function (req, res) {
-  var result;
-
   var query = {
     group: true,
     reduce: true,
