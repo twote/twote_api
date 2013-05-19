@@ -1,16 +1,20 @@
+'use strict';
+
 var Twit = require('twit'),
     cors = require('cors'),
     config = require('./config');
 
 // Make process "fault tolerant" ;-)
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
 // Setup CouchDB connection
 
-var db = new(require('cradle').Connection)(config.db.uri).database(config.db.name);
+var db = new(require('cradle')
+        .Connection)(config.db.uri)
+        .database(config.db.name);
 
 var T = new Twit({
   consumer_key: config.twitter.consumerKey,
@@ -23,8 +27,8 @@ var stream = T.stream('statuses/filter', {
   track: '#' + config.hashId
 });
 
-stream.on('tweet', function(tweet) {
- console.log(tweet);
+stream.on('tweet', function (tweet) {
+  console.log(tweet);
   db.save(tweet.id_str, tweet);
 });
 
@@ -165,15 +169,17 @@ app.get('/twote/:id', function (req, res) {
   });
 });
 
-app.get('/:poll?', function(req, res){
+app.get('/:poll?', function (req, res) {
   var query = {
     group: true,
     reduce: true
+  };
+  if (req.param('poll')) {
+    query.key = req.param('poll');
   }
-  if(req.param('poll')) query.key = req.param('poll');
-  db.view('votes/sumVotesByPoll', query, function(err, db_result) {
-    if(err) {
-      console.log(err)
+  db.view('votes/sumVotesByPoll', query, function (err, db_result) {
+    if (err) {
+      console.log(err);
       return res.send(500);
     }
     res.send({
