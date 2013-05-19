@@ -1,7 +1,7 @@
 'use strict';
 
-var Twit = require('twit'),
-    cors = require('cors'),
+var Twit   = require('twit'),
+    cors   = require('cors'),
     config = require('./config');
 
 // Make process "fault tolerant" ;-)
@@ -35,8 +35,13 @@ stream.on('tweet', function (tweet) {
 // Helper functions
 
 function nice_votes(db_result) {
-  var votes = {}, hash, counter;
-  for (var i in db_result) {
+  var votes = {},
+      hash,
+      counter,
+      option,
+      i;
+
+ for (var i in db_result) {
     hash = db_result[i].key;
     // Create vote if not existing yet
     if (!votes[hash]) {
@@ -52,13 +57,13 @@ function nice_votes(db_result) {
 }
 
 function nice_votes_api(db_result) {
-  var niceVotes     = nice_votes(db_result),
+  var niceVotes    = nice_votes(db_result),
       niceVotesApi = [],
+      overallVotes = 0,
       i,
       k,
       current,
-      improved,
-      overallVotes = 0;
+      improved;
 
   for (i in niceVotes) {
     if (niceVotes.hasOwnProperty(i)) {
@@ -86,13 +91,13 @@ function nice_votes_api(db_result) {
 }
 
 function nice_votes_api_single(db_result, twoteId) {
-  var niceVotes     = nice_votes(db_result),
+  var niceVotes    = nice_votes(db_result),
       niceVotesApi = [],
+      overallVotes = 0,
       i,
       k,
       current,
-      improved,
-      overallVotes = 0;
+      improved;
 
   for (i in niceVotes) {
     if (niceVotes.hasOwnProperty(i)) {
@@ -130,7 +135,7 @@ function nice_votes_api_single(db_result, twoteId) {
 // Setup express
 
 var express = require('express');
-var app = express();
+var app     = express();
 
 app.use(cors());
 
