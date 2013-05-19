@@ -31,11 +31,11 @@ stream.on('tweet', function(tweet) {
 // Helper functions
 
 function nice_votes(db_result) {
-  var votes = {}, voteHash;
-  for(var i in db_result) {
+  var votes = {}, hash, counter;
+  for (var i in db_result) {
     hash = db_result[i].key;
-     // Create vote if not existing yet
-    if(! votes[hash]) {
+    // Create vote if not existing yet
+    if (!votes[hash]) {
       votes[hash] = {};
     }
     for (var option in db_result[i].value.votes) {
