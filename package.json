@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "cradle": "~0.6.5",
-    "twit": "~1.1.6"
+    "twit": "~1.1.6",
+    "cors": "~1.0.1",
+    "express": "~3.2.4"
   },
   "devDependencies": {},
   "scripts": {
