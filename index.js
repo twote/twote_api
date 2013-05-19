@@ -70,7 +70,8 @@ function nice_votes_api(db_result) {
 
       improved = {
         twote: i,
-        overall_votes: overallVotes
+        overall_votes: overallVotes,
+        votes: current
       };
 
       niceVotesApi.push(improved);
