@@ -28,11 +28,48 @@ var stream = T.stream('statuses/filter', {
 });
 
 stream.on('tweet', function (tweet) {
+  // Skip our own account id
+  if(tweet.user.id_str === config.twitter.idString) return;
   console.log(tweet);
-  db.save(tweet.id_str, tweet);
+  db.save(tweet.id_str, tweet, function(err, res) {
+    if(err) {
+      console.log(err);
+    } else {
+      send_post_reply(tweet);
+    }
+  });
 });
 
 // Helper functions
+
+function send_post_reply(tweet) {
+  var userScreenName = tweet.user.screen_name,
+      tweetId = tweet.id_str,
+      hashTags = [],
+      hashTag
+
+  // Iterate trough hashtags
+  for (var i in tweet.entities.hashtags) {
+    hashTag = tweet.entities.hashtags[i].text.toLowerCase();
+    // Filter out our own hashId
+    if (hashTag === config.hashId) continue;
+    // Filter double hashtags
+    if(hashTags.indexOf(hashTag) > -1) continue;
+    // Emit hashtag
+    hashTags.push(hashTag);
+  }
+
+  // No other tag found but our hashId
+  if(hashTags.length < 1) return false;
+
+  var status = '@' + userScreenName + ': Thanks for your #' + config.hashId + '! Here are the results: http://twote.io/twote/' + hashTags[0];
+  T.post('statuses/update', { status: status }, function(err, reply) {
+    if(err) {
+      console.log(err);
+    }
+  });
+
+}
 
 function nice_votes(db_result) {
   var votes = {},
