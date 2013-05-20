@@ -5,6 +5,7 @@
     "name": "twote"
   },
   "twitter": {
+    "idString": "xxxx",
     "consumerKey": "xxxx",
     "consumerSecret": "xxxx",
     "accessToken": "xxxx",
