@@ -1,4 +1,4 @@
-# TODOs / IDEAs
+# TODOS / IDEAS
 
 * Adopt capitalization from first votehash occurence?
 * Ignore retweets?
