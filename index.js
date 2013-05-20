@@ -172,6 +172,8 @@ function nice_votes_api_single(db_result, twoteId) {
 
 var express = require('express');
 var app     = express();
+var server  = require('http').createServer(app);
+var io      = require('socket.io').listen(server);
 
 app.use(cors());
 
@@ -229,4 +231,8 @@ app.get('/:poll?', function (req, res) {
   });
 });
 
-app.listen(8000);
+io.sockets.on('connection', function (socket) {
+  socket.emit('connection_established');
+});
+
+server.listen(8000);
