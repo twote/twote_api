@@ -35,7 +35,7 @@ stream.on('tweet', function (tweet) {
     if(err) {
       console.log(err);
     } else {
-      send_post_reply(tweet);
+      //send_post_reply(tweet);
     }
   });
 });
@@ -116,8 +116,7 @@ function nice_votes_api(db_result) {
 
       improved = {
         twote: i,
-        overall_votes: overallVotes,
-        votes: current
+        overall_votes: overallVotes
       };
 
       niceVotesApi.push(improved);
