@@ -35,7 +35,7 @@ stream.on('tweet', function (tweet) {
     if(err) {
       console.log(err);
     } else {
-      //send_post_reply(tweet);
+      send_post_reply(tweet);
     }
   });
 });
@@ -62,7 +62,7 @@ function send_post_reply(tweet) {
   // No other tag found but our hashId
   if(hashTags.length < 1) return false;
 
-  var status = '@' + userScreenName + ': Thanks for your #' + config.hashId + '! Here are the results: http://twote.io/twote/' + hashTags[0];
+  var status = '@' + userScreenName + ': Thanks for your #' + config.hashId + '! Here are the results: http://twote.io/#' + hashTags[0];
   T.post('statuses/update', { status: status }, function(err, reply) {
     if(err) {
       console.log(err);
@@ -176,6 +176,7 @@ var server  = require('http').createServer(app);
 var io      = require('socket.io').listen(server);
 
 app.use(cors());
+app.use('/', express.static('public'));
 
 app.get('/twote', function (req, res) {
   var query = {
@@ -212,6 +213,7 @@ app.get('/twote/:id', function (req, res) {
   });
 });
 
+/*
 app.get('/:poll?', function (req, res) {
   var query = {
     group: true,
@@ -230,6 +232,7 @@ app.get('/:poll?', function (req, res) {
     });
   });
 });
+*/
 
 io.sockets.on('connection', function (socket) {
   socket.emit('connection_established');
